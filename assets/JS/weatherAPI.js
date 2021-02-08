@@ -2,11 +2,10 @@
 //Daily Weather Forecast
 
 //Accuweather API Key and Location key for Melbourne City
-var locationKey = "26216";
+var apikey = "526092ea9b2c65dd4c4d6ee0811a5950";
 
-var apikey = "";
-
-var queryURL = "https://cors-anywhere.herokuapp.com/http://dataservice.accuweather.com/forecasts/v1/daily/1day/" + locationKey + "?apikey=" + apikey + "&language=en-us&details=false&metric=true"
+// var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + Melbourne,au; + "&appid=" + APIkey;
+var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + 37.8136 + "&lon=" + 144.9631 + "&units=metric" + "&appid=" + apikey;
 
 //DOM for storing weather data
 var todaysForecast = {};
@@ -20,20 +19,33 @@ async function fetchWeather () {
         throw Error("ERROR");
     }
     resp = await resp.json()
-    
-    var currentDate = moment().format('LLLL').slice(0, -8);
-    var minTemp = "Min " + Math.trunc(resp.DailyForecasts[0].Temperature.Minimum.Value) + " °";
-    var maxTemp = "Max " + Math.trunc(resp.DailyForecasts[0].Temperature.Maximum.Value) + " °";
-    var weatherText = resp.DailyForecasts[0].Day.IconPhrase;
-    var weatherIcon = document.createElement("img");
-    weatherIcon.src = "assets/images/weatherImages/" + resp.DailyForecasts[0].Day.Icon + ".png";
+    console.log(resp);
 
-    displayWeather.textContent = currentDate + "  " + minTemp + "  " + maxTemp + "  " + weatherText;
-    displayWeather.appendChild(weatherIcon);
+    var currentDate = moment().format('LLLL').slice(0, -8);
+    var minTemp = "Min " + resp.main.temp_min + " °C";
+    var maxTemp = "Max " + resp.main.temp_max + " °C";
+
+    displayWeather.textContent = currentDate + " : " + minTemp + "  " + maxTemp;
 
 };
+
+var queryIconUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + 37.8136 + "&lon=" + 144.9631 + "&appid=" + apikey
+
+async function fetchIcon(){
+
+    var iconResp = await fetch(queryIconUrl)
+    if (!iconResp.ok) {
+        throw Error("ERROR");
+    }
+    iconResp = await iconResp.json();
+    var iconCode = iconResp.list[3].weather[0].icon;
+    var weatherIcon = document.createElement("img");
+    weatherIcon.src = "https://openweathermap.org/img/w/" + iconCode + ".png";
+    displayWeather.appendChild(weatherIcon);
+}
     
 fetchWeather();
+fetchIcon();
 
 
 
