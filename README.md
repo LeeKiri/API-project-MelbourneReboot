@@ -14,6 +14,14 @@ Reboot Melbourne is a website for users to rediscover their local community.
 * Moment.js
 * Materialize CSS library
 
+### My Contributions
+
+* Wireframes, concept and design.
+* Sign-up and login javascript
+* CSS, HTML and Materialize
+* Mobile Responsiveness
+* Accuweather API
+
 ### Github Repository
 https://github.com/LeeKiri/MelbourneReboot-app
 
